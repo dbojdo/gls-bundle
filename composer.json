@@ -1,0 +1,30 @@
+{
+    "name" : "webit/gls-bundle",
+    "type": "symfony-bundle",
+    "description": "GLS ADE and GLS Track & Tracke API Symfony 2 integration",
+    "keywords": ["web-it","shipment", "bundle", "delivery", "parcel", "dispatch", "gls", "gls-ade", "track", "gls-track"],
+    "homepage": "http://www.web-it.eu",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Bojdo",
+            "email": "daniel.bojdo@web-it.eu",
+            "homepage": "http://www.web-it.eu"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "~2.3",
+        "webit/gls-ade": "dev-master",
+        "webit/gls-tracking": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Webit\\Bundle\\GlsBundle\\" : "src"
+        }
+    },
+    "minimum-stability": "dev"
+}
