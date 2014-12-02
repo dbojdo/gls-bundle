@@ -9,7 +9,6 @@ namespace Webit\Bundle\GlsBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Webit\Bundle\GlsBundle\DependencyInjection\Compiler\AccountPass;
 
 /**
  * Class WebitGlsBundle
@@ -17,6 +16,9 @@ use Webit\Bundle\GlsBundle\DependencyInjection\Compiler\AccountPass;
  */
 class WebitGlsBundle extends Bundle
 {
+    /**
+     * @param ContainerBuilder $builder
+     */
     public function build(ContainerBuilder $builder)
     {
     }
