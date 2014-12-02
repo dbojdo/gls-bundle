@@ -7,37 +7,70 @@
     <parameters>
         <!-- ADE -->
         <parameter key="webit_gls.ade.auth_api.class">Webit\GlsAde\Api\AuthApi</parameter>
+        <parameter key="webit_gls.ade.input_normalizer.class">Webit\SoapApi\Input\InputNormalizerSerializerBased</parameter>
         <parameter key="webit_gls.ade.exception_factory.class">Webit\GlsAde\Api\Exception\ExceptionFactory</parameter>
         <parameter key="webit_gls.ade.api_factory.class">Webit\GlsAde\Api\Factory\ApiFactory</parameter>
 
         <!-- Track & Trace -->
-        <parameter key="webit_gls.tracking_api_factory.class">Webit\GlsTracking\Api\Factory\TrackingApiFactory</parameter>
-        <parameter key="webit_gls.tracking_url_provider_factory.class">Webit\GlsTracking\UrlProvider\TrackingUrlProviderFactory</parameter>
+        <parameter key="webit_gls.tracking.api_factory.class">Webit\GlsTracking\Api\Factory\TrackingApiFactory</parameter>
+        <parameter key="webit_gls.tracking.input_normalizer.class">Webit\SoapApi\Input\InputNormalizerSerializerBased</parameter>
+        <parameter key="webit_gls.tracking.api_exception_factory.class">Webit\GlsTracking\Api\Exception\ExceptionFactory</parameter>
+        <parameter key="webit_gls.tracking.url_provider_factory.class">Webit\GlsTracking\UrlProvider\TrackingUrlProviderFactory</parameter>
 
         <!-- Common -->
-        <parameter key="webit_gls.api_provider.default.class">Webit\Bundle\Api\ApiProvider</parameter>
+        <parameter key="webit_gls.api_provider.default.class">Webit\Bundle\GlsBundle\Api\ApiProvider</parameter>
     </parameters>
     <services>
         <!-- ADE -->
-        <service id="webit_gls.ade.exception_factory" class="%webit_gls.ade.exception_factory.class%" />
-        <service id="webit_gls.ade.api_factory" class="%webit_gls.ade.api_factory.class%">
-            <argument></argument>
-        </service>
         <service
-                id="webit_gls.ade.auth_api"
-                class="%webit_gls.ade_auth_api.class%"
-                factory-service="webit_gls.ade_api_factory"
-                factory-method="createAuthApi"
-                public="false"
+            id="webit_gls.ade.input_normalizer"
+            class="%webit_gls.ade.input_normalizer.class%"
+            public="false"
         >
+            <factory service="webit_soap_api.input_normalizer.serializer_factory" method="createNormalizer" />
+            <argument type="collection">
+                <argument>input</argument>
+            </argument>
+        </service>
+        <service id="webit_gls.ade.exception_factory" class="%webit_gls.ade.exception_factory.class%" public="false"/>
+        <service id="webit_gls.ade.api_factory" class="%webit_gls.ade.api_factory.class%">
+            <argument type="service" id="webit_soap_api.soap_client_factory" />
+            <argument type="service" id="webit_soap_api.executor_factory" />
+            <argument type="service" id="webit_gls.ade.input_normalizer" />
+            <argument type="service" id="webit_soap_api.hydrator" />
+            <argument type="service" id="webit_gls.ade.exception_factory" />
         </service>
 
         <!-- Track & Trace -->
-
+        <service id="webit_gls.ade.api_factory" class="%webit_gls.ade.api_factory.class%">
+            <argument type="service" id="webit_soap_api.soap_client_factory" />
+            <argument type="service" id="webit_soap_api.executor_factory" />
+            <argument type="service" id="webit_gls.ade.input_normalizer" />
+            <argument type="service" id="webit_soap_api.hydrator" />
+            <argument type="service" id="webit_gls.ade.exception_factory" />
+        </service>
+        <service
+            id="webit_gls.tracking.input_normalizer"
+            class="%webit_gls.tracking.input_normalizer.class%"
+            public="false"
+        >
+            <factory service="webit_soap_api.input_normalizer.serializer_factory" method="createNormalizer" />
+        </service>
+        <service id="webit_gls.tracking.api_exception_factory" class="%webit_gls.tracking.api_exception_factory.class%" public="false"/>
+        <service id="webit_gls.tracking.api_factory" class="%webit_gls.tracking.api_factory.class%">
+            <argument type="service" id="webit_soap_api.soap_client_factory" />
+            <argument type="service" id="webit_soap_api.executor_factory" />
+            <argument type="service" id="webit_gls.tracking.input_normalizer" />
+            <argument type="service" id="webit_soap_api.hydrator" />
+            <argument type="service" id="webit_gls.tracking.api_exception_factory" />
+        </service>
+        <service id="webit_gls.tracking.url_provider_factory" class="%webit_gls.tracking.url_provider_factory.class%" />
 
         <!-- Common -->
         <service id="webit_gls.api_provider.default" class="%webit_gls.api_provider.default.class%">
-            <argument type="service" id="webit_gls.ade.auth_api" />
+            <argument type="service" id="webit_gls.ade.api_factory" />
+            <argument type="service" id="webit_gls.tracking.api_factory" />
+            <argument type="service" id="webit_gls.tracking.url_provider_factory" />
         </service>
         <service id="webit_gls.api_provider" alias="webit_gls.api_provider.default" />
     </services>

@@ -5,7 +5,7 @@
         http://symfony.com/schema/dic/services/services-1.0.xsd"
         >
     <parameters>
-        <parameter key="webit_gls.account_manager.default.class">Webit\Bundle\Account\AccountManager</parameter>
+        <parameter key="webit_gls.account_manager.default.class">Webit\Bundle\GlsBundle\Account\AccountManager</parameter>
     </parameters>
     <services>
         <service id="webit_gls.account_manager.default" class="%webit_gls.account_manager.default.class%" />

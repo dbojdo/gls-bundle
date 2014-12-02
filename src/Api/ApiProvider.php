@@ -62,7 +62,6 @@ class ApiProvider implements ApiProviderInterface
     private $api;
 
     /**
-     * @param AuthApi $adeAuthApi
      * @param ApiFactory $adeApiFactory
      * @param TrackingApiFactory $trackingApiFactory
      * @param TrackingUrlProviderFactoryInterface $trackingUrlProviderFactory
@@ -81,11 +80,17 @@ class ApiProvider implements ApiProviderInterface
 
     /**
      *
+     * @param AdeAccount $account
      * @return AuthApi
      */
     public function getAdeAuthApi(AdeAccount $account)
     {
-        return $this->api->get(self::API_ADE_AUTH);
+        $key = sprintf('%s_%s', self::API_ADE_AUTH, $account->isTestEnvironment() ? 'test' : 'prod');
+        if ($this->api->containsKey($key) == false) {
+            $this->api->set($key, $this->adeApiFactory->createAuthApi($account->isTestEnvironment()));
+        }
+
+        return $this->api->get($key);
     }
 
     /**
@@ -227,7 +232,7 @@ class ApiProvider implements ApiProviderInterface
         return call_user_func_array(
             $this->adeApiFactory,
             $factoryMethod,
-            array($this->getAdeAuthApi(), $account->getAdeUsername(), $account->getAdePassword())
+            array($this->getAdeAuthApi($account), $account->getAdeUsername(), $account->getAdePassword())
         );
     }
 

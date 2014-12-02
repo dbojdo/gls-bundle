@@ -9,6 +9,7 @@ namespace Webit\Bundle\GlsBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -21,11 +22,10 @@ class WebitGlsExtension extends Extension
     /**
      * Loads a specific configuration.
      *
-     * @param array $config An array of configuration values
+     * @param array $configs
      * @param ContainerBuilder $container A ContainerBuilder instance
      *
-     * @throws \InvalidArgumentException When provided tag is not defined in this extension
-     *
+     * @internal param array $config An array of configuration values
      * @api
      */
     public function load(array $configs, ContainerBuilder $container)
@@ -37,28 +37,47 @@ class WebitGlsExtension extends Extension
         $loader->load('account.xml');
         $loader->load('api.xml');
 
-        if (isset($config['ade_accounts'])) {
+        $container->setParameter('webit_gls.ade_accounts', $config['ade_accounts']);
+        $container->setParameter('webit_gls.track_accounts', $config['track_accounts']);
+//
+        if ($config['ade_accounts']) {
             $this->loadAdeAccounts($container, $config['ade_accounts']);
         }
-
+//
         if (isset($config['track_accounts'])) {
             $this->loadTrackAccounts($container, $config['track_accounts']);
         }
     }
 
-    private function loadAdeAccounts(ContainerBuilder $container, rray $accounts)
+    private function loadAdeAccounts(ContainerBuilder $container, array $accounts)
     {
-        $manager = $container->getDefinition('webit_gls.account_manager');
+        $manager = $container->getDefinition('webit_gls.account_manager.default');
         foreach ($accounts as $alias => $arAccount) {
-            $manager->addMethodCall('registerAdeAccount', array($alias, $arAccount['username'], $arAccount['password'], $arAccount['test_environment']));
+            $manager->addMethodCall(
+                'registerAdeAccount',
+                array(
+                    new Definition(
+                        'Webit\Bundle\GlsBundle\Account\AdeAccount',
+                        array($alias, $arAccount['username'], $arAccount['password'], $arAccount['test_mode'])
+                    )
+                )
+            );
         }
     }
 
     private function loadTrackAccounts(ContainerBuilder $container, array $accounts)
     {
-        $manager = $container->getDefinition('webit_gls.account_manager');
+        $manager = $container->getDefinition('webit_gls.account_manager.default');
         foreach ($accounts as $alias => $arAccount) {
-            $manager->addMethodCall('registerTrackAccount', array($alias, $arAccount['username'], $arAccount['password']));
+            $manager->addMethodCall(
+                'registerTrackAccount',
+                array(
+                    new Definition(
+                        'Webit\Bundle\GlsBundle\Account\TrackAccount',
+                        array($alias, $arAccount['username'], $arAccount['password'])
+                    )
+                )
+            );
         }
     }
 }

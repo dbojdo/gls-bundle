@@ -7,7 +7,9 @@
  */
 namespace Webit\Bundle\GlsBundle;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Webit\Bundle\GlsBundle\DependencyInjection\Compiler\AccountPass;
 
 /**
  * Class WebitGlsBundle
@@ -15,5 +17,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class WebitGlsBundle extends Bundle
 {
-
+    public function build(ContainerBuilder $builder)
+    {
+        $builder->addCompilerPass(new AccountPass());
+    }
 }
