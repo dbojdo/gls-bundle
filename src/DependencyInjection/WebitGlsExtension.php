@@ -37,13 +37,10 @@ class WebitGlsExtension extends Extension
         $loader->load('account.xml');
         $loader->load('api.xml');
 
-        $container->setParameter('webit_gls.ade_accounts', $config['ade_accounts']);
-        $container->setParameter('webit_gls.track_accounts', $config['track_accounts']);
-//
         if ($config['ade_accounts']) {
             $this->loadAdeAccounts($container, $config['ade_accounts']);
         }
-//
+
         if (isset($config['track_accounts'])) {
             $this->loadTrackAccounts($container, $config['track_accounts']);
         }

@@ -1,5 +1,6 @@
 <?php
 namespace Webit\Bundle\GlsBundle\Features;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
@@ -22,17 +23,20 @@ class ExtensionContext implements Context, SnippetAcceptingContext
     private $app;
 
     /**
-     * @var ContainerBuilder
-     */
-    private $container;
-
-    /**
      * @BeforeScenario
      */
     public function createApp()
     {
-        error_reporting(22527);
         $this->app = new AppKernel('test', true);
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    private function getContainer()
+    {
+        $this->app->boot();
+        return $this->app->getContainer();
     }
 
     /**
@@ -51,7 +55,6 @@ class ExtensionContext implements Context, SnippetAcceptingContext
     public function applicationIsUp()
     {
         $this->app->boot();
-        $this->container = $this->app->getContainer();
     }
 
     /**
@@ -66,11 +69,11 @@ class ExtensionContext implements Context, SnippetAcceptingContext
                 $serviceName = trim($serviceName);
                 if (empty($serviceName)) {continue;}
                 Assert::assertTrue(
-                    $this->container->has($serviceName),
+                    $this->getContainer()->has($serviceName),
                     sprintf('Required service "%s" has not been registered in Container', $serviceName)
                 );
 
-                $this->container->get($serviceName);
+                $this->getContainer()->get($serviceName);
             }
         }
     }
@@ -82,7 +85,7 @@ class ExtensionContext implements Context, SnippetAcceptingContext
     public function thereShouldBeFollowingAccountsInAccountManager(TableNode $table)
     {
         /** @var AccountManagerInterface $accountManager */
-        $accountManager = $this->container->get('webit_gls.account_manager');
+        $accountManager = $this->getContainer()->get('webit_gls.account_manager');
         foreach ($table as $row) {
             if ($row['type'] == 'ade') {
                 $account = $accountManager->getAdeAccount($row['alias']);

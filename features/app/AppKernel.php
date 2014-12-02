@@ -25,14 +25,18 @@ use Webit\Bundle\SoapApiBundle\WebitSoapApiBundle;
  */
 class AppKernel extends Kernel
 {
+
     /**
-     * @var bool
+     * @var string
      */
-    private $configPrepared = false;
+    private $hash;
+
+    private $configMerge = array();
 
     public function __construct($environment, $debug)
     {
         parent::__construct($environment, $debug);
+        $this->hash = md5(microtime().mt_rand(0, 1000000));
     }
 
     /**
@@ -45,11 +49,10 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = array(
-            new WebitSoapApiBundle(),
-            new WebitGlsBundle(),
             new FrameworkBundle(),
             new JMSSerializerBundle(),
-
+            new WebitSoapApiBundle(),
+            new WebitGlsBundle()
         );
 
         return $bundles;
@@ -64,10 +67,16 @@ class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        if ($this->configPrepared == false) {
-            copy(__DIR__.'/config/config.yml', $this->getCacheDir() .'/config.yml');
-            $this->configPrepared = true;
+        $config = file_get_contents(__DIR__.'/config/config.yml');
+        if ($this->configMerge) {
+            $config = Yaml::parse($config);
+            foreach ($this->configMerge as $configToMerge) {
+                $config = array_replace($config, Yaml::parse($configToMerge));
+            }
+            $config = Yaml::dump($config);
         }
+
+        file_put_contents($this->getCacheDir() .'/config.yml', $config);
 
         $loader->load($this->getCacheDir() .'/config.yml');
     }
@@ -77,17 +86,34 @@ class AppKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/WebitGlsBundle/cache';
+        $dir = sys_get_temp_dir() . '/' . $this->hash . '/cache';
+        @mkdir($dir, 755, true);
+
+        return $dir;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     */
+    public function getLogDir()
+    {
+        return $this->getCacheDir().'/logs';
     }
 
     public function mergeConfig($configYml)
     {
-        $baseConfig = Yaml::parse(file_get_contents(__DIR__.'/config/config.yml'));
-        $arConfig = Yaml::parse($configYml);
+        $this->configMerge[] = $configYml;
+    }
 
-        $config = array_replace($baseConfig, $arConfig);
-
-        file_put_contents($this->getCacheDir().'/config.yml', Yaml::dump($config));
-        $this->configPrepared = true;
+    /**
+     * Gets the container class.
+     *
+     * @return string The container class
+     */
+    protected function getContainerClass()
+    {
+        return $this->name.ucfirst($this->environment).($this->debug ? 'Debug' : '').$this->hash.'ProjectContainer';
     }
 }

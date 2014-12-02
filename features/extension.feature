@@ -39,8 +39,12 @@ Feature: Service container extension
             alias-1:
                 username: test-username
                 password: test-password
+            alias-2:
+                username: test-username2
+                password: test-password2
     """
     When application is up
     Then there should be following Accounts in AccountManager:
-      | type   | alias   | username       | password       |
-      | track  | alias-1 | test-username  | test-password  |
+      | type   | alias   | username        | password       |
+      | track  | alias-1 | test-username   | test-password  |
+      | track  | alias-2 | test-username2  | test-password2 |

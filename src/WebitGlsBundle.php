@@ -19,6 +19,5 @@ class WebitGlsBundle extends Bundle
 {
     public function build(ContainerBuilder $builder)
     {
-        $builder->addCompilerPass(new AccountPass());
     }
 }
