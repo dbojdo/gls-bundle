@@ -28,20 +28,25 @@ class Configuration implements ConfigurationInterface
 
         $root
         ->children()
-            ->arrayNode('accounts')
-                ->requiresAtLeastOneElement()
+            ->arrayNode('ade_accounts')
                 ->useAttributeAsKey('alias')
                 ->prototype('array')
                     ->children()
-                        ->scalarNode('ade_username')->cannotBeEmpty()->isRequired()->end()
-                        ->scalarNode('ade_password')->cannotBeEmpty()->isRequired()->end()
+                        ->scalarNode('username')->cannotBeEmpty()->isRequired()->end()
+                        ->scalarNode('password')->cannotBeEmpty()->isRequired()->end()
                         ->scalarNode('ade_test_mode')->cannotBeEmpty()->defaultTrue()->end()
-                        ->scalarNode('track_username')->cannotBeEmpty()->isRequired()->end()
-                        ->scalarNode('track_password')->cannotBeEmpty()->isRequired()->end()
                     ->end()
                 ->end()
             ->end()
-            ->scalarNode('default_account')->cannotBeEmpty()->end()
+            ->arrayNode('track_accounts')
+                ->useAttributeAsKey('alias')
+                ->prototype('array')
+                    ->children()
+                        ->scalarNode('username')->cannotBeEmpty()->isRequired()->end()
+                        ->scalarNode('password')->cannotBeEmpty()->isRequired()->end()
+                    ->end()
+                ->end()
+            ->end()
         ->end();
 
         return $treeBuilder;

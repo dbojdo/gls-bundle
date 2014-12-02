@@ -14,13 +14,19 @@ namespace Webit\Bundle\GlsBundle\Account;
 interface AccountManagerInterface
 {
     /**
-     * @param Account $account
+     * @param AbstractAccount $account
      */
-    public function registerAccount(Account $account);
+    public function registerAccount(AbstractAccount $account);
 
     /**
      * @param string $alias
-     * @return Account
+     * @return AdeAccount
      */
-    public function getAccount($alias);
+    public function getAdeAccount($alias);
+
+    /**
+     * @param string $alias
+     * @return TrackAccount
+     */
+    public function getTrackAccount($alias);
 }

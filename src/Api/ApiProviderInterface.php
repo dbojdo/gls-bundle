@@ -7,7 +7,8 @@
  */
 namespace Webit\Bundle\GlsBundle\Api;
 
-use Webit\Bundle\GlsBundle\Account\Account;
+use Webit\Bundle\GlsBundle\Account\AdeAccount;
+use Webit\Bundle\GlsBundle\Account\TrackAccount;
 use Webit\GlsAde\Api\AuthApi;
 use Webit\GlsAde\Api\ConsignmentPrepareApi;
 use Webit\GlsAde\Api\MpkApi;
@@ -27,69 +28,70 @@ interface ApiProviderInterface
 {
     /**
      *
+     * @param AdeAccount $account
      * @return AuthApi
      */
-    public function getAdeAuthApi();
+    public function getAdeAuthApi(AdeAccount $account);
 
     /**
      *
-     * @param Account $account
+     * @param AdeAccount $account
      * @return MpkApi
      */
-    public function getAdeMpkApi(Account $account);
+    public function getAdeMpkApi(AdeAccount $account);
 
     /**
      *
-     * @param Account $account
+     * @param AdeAccount $account
      * @return ConsignmentPrepareApi
      */
-    public function getAdeConsignmentPrepareApi(Account $account);
+    public function getAdeConsignmentPrepareApi(AdeAccount $account);
 
     /**
      *
-     * @param Account $account
+     * @param AdeAccount $account
      * @return ProfileApi
      */
-    public function getAdeProfileApi(Account $account);
+    public function getAdeProfileApi(AdeAccount $account);
 
     /**
      *
-     * @param Account $account
+     * @param AdeAccount $account
      * @return ServiceApi
      */
-    public function getAdeServiceApi(Account $account);
+    public function getAdeServiceApi(AdeAccount $account);
 
     /**
      *
-     * @param Account $account
+     * @param AdeAccount $account
      * @return SenderAddressApi
      */
-    public function getAdeSenderAddressApi(Account $account);
+    public function getAdeSenderAddressApi(AdeAccount $account);
 
     /**
      *
-     * @param Account $account
+     * @param AdeAccount $account
      * @return PickupApi
      */
-    public function getAdePickupApi(Account $account);
+    public function getAdePickupApi(AdeAccount $account);
 
     /**
      *
-     * @param Account $account
+     * @param AdeAccount $account
      * @return PostCodeApi
      */
-    public function getAdePostCodeApi(Account $account);
+    public function getAdePostCodeApi(AdeAccount $account);
 
     /**
      *
-     * @param Account $account
+     * @param TrackAccount $account
      * @return TrackingApi
      */
-    public function getTrackingApi(Account $account);
+    public function getTrackingApi(TrackAccount $account);
 
     /**
-     * @param Account $account
+     * @param TrackAccount $account
      * @return TrackingUrlProvider
      */
-    public function getTrackingUrlProvider(Account $account);
+    public function getTrackingUrlProvider(TrackAccount $account);
 }

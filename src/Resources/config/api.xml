@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd"
+        >
+    <parameters>
+        <!-- ADE -->
+        <parameter key="webit_gls.ade.auth_api.class">Webit\GlsAde\Api\AuthApi</parameter>
+        <parameter key="webit_gls.ade.exception_factory.class">Webit\GlsAde\Api\Exception\ExceptionFactory</parameter>
+        <parameter key="webit_gls.ade.api_factory.class">Webit\GlsAde\Api\Factory\ApiFactory</parameter>
+
+        <!-- Track & Trace -->
+        <parameter key="webit_gls.tracking_api_factory.class">Webit\GlsTracking\Api\Factory\TrackingApiFactory</parameter>
+        <parameter key="webit_gls.tracking_url_provider_factory.class">Webit\GlsTracking\UrlProvider\TrackingUrlProviderFactory</parameter>
+
+        <!-- Common -->
+        <parameter key="webit_gls.api_provider.default.class">Webit\Bundle\Api\ApiProvider</parameter>
+    </parameters>
+    <services>
+        <!-- ADE -->
+        <service id="webit_gls.ade.exception_factory" class="%webit_gls.ade.exception_factory.class%" />
+        <service id="webit_gls.ade.api_factory" class="%webit_gls.ade.api_factory.class%">
+            <argument></argument>
+        </service>
+        <service
+                id="webit_gls.ade.auth_api"
+                class="%webit_gls.ade_auth_api.class%"
+                factory-service="webit_gls.ade_api_factory"
+                factory-method="createAuthApi"
+                public="false"
+        >
+        </service>
+
+        <!-- Track & Trace -->
+
+
+        <!-- Common -->
+        <service id="webit_gls.api_provider.default" class="%webit_gls.api_provider.default.class%">
+            <argument type="service" id="webit_gls.ade.auth_api" />
+        </service>
+        <service id="webit_gls.api_provider" alias="webit_gls.api_provider.default" />
+    </services>
+</container>

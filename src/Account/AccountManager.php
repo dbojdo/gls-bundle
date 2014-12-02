@@ -26,19 +26,59 @@ class AccountManager implements AccountManagerInterface
     }
 
     /**
-     * @param Account $account
+     * @param AbstractAccount $account
+     * @param string $key
      */
-    public function registerAccount(Account $account)
+    private function registerAccount(AbstractAccount $account, $key)
     {
-        $this->accounts->set($account->getAlias(), $account);
+        $this->accounts->set($key, $account);
+    }
+
+    /**
+     * @param AdeAccount $account
+     */
+    public function registerAdeAccount(AdeAccount $account)
+    {
+        $key = $this->createKey($account->getAlias(), 'ade');
+        $this->registerAccount($account, $key);
+    }
+
+    /**
+     * @param TrackAccount $account
+     */
+    public function registerTrackAccount(TrackAccount $account)
+    {
+        $key = $this->createKey($account->getAlias(), 'track');
+        $this->registerAccount($account, $key);
     }
 
     /**
      * @param string $alias
-     * @return Account
+     * @return AdeAccount
      */
-    public function getAccount($alias)
+    public function getAdeAccount($alias)
     {
-        return $this->accounts->get($alias);
+        $key = $this->createKey($alias, 'ade');
+        return $this->accounts->get($key);
+    }
+
+    /**
+     * @param string $alias
+     * @return TrackAccount
+     */
+    public function getTrackAccount($alias)
+    {
+        $key = $this->createKey($alias, 'track');
+        return $this->accounts->get($key);
+    }
+
+    /**
+     * @param string $alias
+     * @param string $type
+     * @return string
+     */
+    private function createKey($alias, $type)
+    {
+        return sprintf('%s_%s', $type, $alias);
     }
 }
