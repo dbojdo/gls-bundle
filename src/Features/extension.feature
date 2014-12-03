@@ -1,9 +1,9 @@
-Feature: Service container extension
-  In order to bootstrap SOAP-API library
+Feature: Symfony 2 Extension
+  In order to bootstrap GLS-ADE and GLS Track & Trace libraries
   As a developer
-  I want register SOAP-API library services in service container
+  I want register GLS-ADE and GLS Track & Trace libraries services in Container
 
-  Scenario: Loading extension
+  Scenario: Loading services
     Given application is up
     Then there should be following services in container:
     """
@@ -11,7 +11,7 @@ Feature: Service container extension
     webit_gls.api_provider.default, webit_gls.api_provider
     """
 
-  Scenario: Loading ADE accounts to AccountManager
+  Scenario: Loading configuration with ADE accounts to AccountManager
     Given application config contains:
     """
     webit_gls:
@@ -31,7 +31,7 @@ Feature: Service container extension
       | ade  | alias-1 | test-username  | test-password  | true  |
       | ade  | alias-2 | test-username2 | test-password2 | false |
 
-  Scenario: Loading Track accounts to AccountManager
+  Scenario: Loading configuration with Track & Trace accounts to AccountManager
     Given application config contains:
     """
     webit_gls:
