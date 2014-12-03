@@ -1,4 +1,4 @@
-![alt tag](https://travis-ci.org/dbojdo/gls-bundle.svg?branch=master)
+[![Build Status](https://api.travis-ci.org/dbojdo/gls-bundle.png?branch=master)](https://travis-ci.org/dbojdo/gls-bundle)
 
 WebitGlsBundle
 ==========
