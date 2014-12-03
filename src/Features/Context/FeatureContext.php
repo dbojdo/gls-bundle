@@ -1,42 +1,41 @@
 <?php
-namespace Webit\Bundle\GlsBundle\Features;
+/**
+ * FeatureContext.php
+ *
+ * @author dbojdo - Daniel Bojdo <daniel.bojdo@dxi.eu>
+ * Created on Dec 03, 2014, 12:13
+ * Copyright (C) DXI Ltd
+ */
+
+namespace Webit\Bundle\GlsBundle\Features\Context;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Symfony\Component\Debug\Debug;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Behat\Symfony2Extension\Context\KernelAwareContext;
 use PHPUnit_Framework_Assert as Assert;
-use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Webit\Bundle\GlsBundle\Account\AccountManagerInterface;
-use Webit\Bundle\GlsBundle\Features\App\AppKernel;
 
 /**
- * Defines application features from the specific context.
+ * Class FeatureContext
+ * @package Webit\Bundle\GlsBundle\Features\Context
  */
-class ExtensionContext implements Context, SnippetAcceptingContext
+class FeatureContext implements Context, SnippetAcceptingContext, KernelAwareContext
 {
     /**
      * @var AppKernel
      */
-    private $app;
-
-    /**
-     * @BeforeScenario
-     */
-    public function createApp()
-    {
-        $this->app = new AppKernel('test', true);
-    }
+    private $kernel;
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     private function getContainer()
     {
-        $this->app->boot();
-        return $this->app->getContainer();
+        $this->kernel->boot();
+        return $this->kernel->getContainer();
     }
 
     /**
@@ -46,7 +45,8 @@ class ExtensionContext implements Context, SnippetAcceptingContext
      */
     public function applicationConfigContains(PyStringNode $string)
     {
-        $this->app->mergeConfig($string->getRaw());
+        $this->kernel = clone($this->kernel);
+        $this->kernel->mergeConfig($string->getRaw());
     }
 
     /**
@@ -54,7 +54,7 @@ class ExtensionContext implements Context, SnippetAcceptingContext
      */
     public function applicationIsUp()
     {
-        $this->app->boot();
+        $this->kernel->boot();
     }
 
     /**
@@ -102,5 +102,15 @@ class ExtensionContext implements Context, SnippetAcceptingContext
                 Assert::assertEquals($row['password'], $account->getPassword());
             }
         }
+    }
+
+    /**
+     * Sets Kernel instance.
+     *
+     * @param KernelInterface $kernel
+     */
+    public function setKernel(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
     }
 }

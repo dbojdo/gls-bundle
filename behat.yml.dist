@@ -1,7 +1,13 @@
 default:
     calls:
         error_reporting: 16383
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                path: src/Features/App/AppKernel.php
+                env: test
+                debug: true
     suites:
         WebitGlsBundle:
-            contexts:
-                - Webit\Bundle\GlsBundle\Features\ExtensionContext
+            type: symfony_bundle
+            bundle: WebitGlsBundle

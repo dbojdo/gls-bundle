@@ -7,17 +7,10 @@
  * Copyright (C) DXI Ltd
  */
 
-namespace Webit\Bundle\GlsBundle\Features\App;
-
-use JMS\SerializerBundle\JMSSerializerBundle;
-use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
-use Webit\Bundle\GlsBundle\WebitGlsBundle;
-use Webit\Bundle\SoapApiBundle\WebitSoapApiBundle;
 
 /**
  * Class AppKernel
@@ -36,7 +29,21 @@ class AppKernel extends Kernel
     public function __construct($environment, $debug)
     {
         parent::__construct($environment, $debug);
-        $this->hash = md5(microtime().mt_rand(0, 1000000));
+        $this->hash = $this->generateHash();
+    }
+
+    /**
+     * @return string
+     */
+    private function generateHash()
+    {
+        return md5(microtime().mt_rand(0, 1000000));
+    }
+
+    public function __clone()
+    {
+        parent::__clone();
+        $this->hash = $this->generateHash();
     }
 
     /**
@@ -49,10 +56,10 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = array(
-            new FrameworkBundle(),
-            new JMSSerializerBundle(),
-            new WebitSoapApiBundle(),
-            new WebitGlsBundle()
+            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new Webit\Bundle\SoapApiBundle\WebitSoapApiBundle(),
+            new Webit\Bundle\GlsBundle\WebitGlsBundle()
         );
 
         return $bundles;
