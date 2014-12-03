@@ -1,4 +1,4 @@
-Feature: Symfony 2 Extension
+Feature: WebitGlsBundle - Service container extension
   In order to bootstrap GLS-ADE and GLS Track & Trace libraries
   As a developer
   I want register GLS-ADE and GLS Track & Trace libraries services in Container
