@@ -57,8 +57,10 @@ webit_gls:
               test_mode: false
 ```
  ## Usage
+ 
  To use GLS APIs you need ***AccountManager*** and ***ApiProvider***.
  You can get them directly from Service Container or inject them to your class.
+ 
  ```
  <?php
  namespace Acme\Bundle\AcmeBundle\Controller;
