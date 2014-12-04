@@ -98,15 +98,15 @@ class MyController {
     }
     
     public function checkParcelStatusAction()
-        {
-            /** @var \Webit\Bundle\GlsBundle\Account\TrackAccount */
-            $account = $this->accountManager->getTrackAccount('my-account');
+    {
+        /** @var \Webit\Bundle\GlsBundle\Account\TrackAccount */
+        $account = $this->accountManager->getTrackAccount('my-account');
             
-            /** @var \Webit\GlsTracking\Api\TrackingApi */
-            $trackingApi = $this->apiProvider->getTrackingApi($account);
+        /** @var \Webit\GlsTracking\Api\TrackingApi */
+        $trackingApi = $this->apiProvider->getTrackingApi($account);
             
-            // do your stuff with API
-        }
+        // do your stuff with API
+    }
 }
 ```
  
