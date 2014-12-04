@@ -5,7 +5,7 @@
 GLS ADE and GLS Track &amp; Trace API Symfony 2 integration
 
 ## Installation
-### Composer
+### via Composer
 
 Add the **webit/gls-bundle** into **composer.json**
 
@@ -24,7 +24,6 @@ Add the **webit/gls-bundle** into **composer.json**
 ```
 
 ### Register bundle in Kernel
-
 Add following line:
 
 ```
@@ -35,8 +34,8 @@ $bundles = array(
     // ...
 );
 ```
-## Configuration
 
+## Configuration
 You can define as much accounts as you need (ADE Accounts and Track & Trace as well)
 
 ```
@@ -56,19 +55,19 @@ webit_gls:
               password: my-track-and-trace-password
               test_mode: false
 ```
- ## Usage
+
+## Usage
+To use GLS APIs you need ***AccountManager*** and ***ApiProvider***.
+You can get them directly from Service Container or inject them to your class.
+
+```
+<?php
+namespace Acme\Bundle\AcmeBundle\Controller;
  
- To use GLS APIs you need ***AccountManager*** and ***ApiProvider***.
- You can get them directly from Service Container or inject them to your class.
+use Webit\Bundle\GlsBundle\Api\ApiProviderInterface;
+use Webit\Bundle\GlsBundle\Account\AccountManagerInterface;
  
- ```
- <?php
- namespace Acme\Bundle\AcmeBundle\Controller;
- 
- use Webit\Bundle\GlsBundle\Api\ApiProviderInterface;
- use Webit\Bundle\GlsBundle\Account\AccountManagerInterface;
- 
- class MyController {
+class MyController {
  
     /**
      * @var AccountManagerInterface
@@ -107,10 +106,10 @@ webit_gls:
             
             // do your stuff with API
         }
- }
- ```
+}
+```
  
- To learn how to use GLS APIs see:
- *   GLS-ADE: [https://github.com/dbojdo/gls-ade](https://github.com/dbojdo/gls-ade "GLS-ADE API library")
- *   GLS Track & Trace: [https://github.com/dbojdo/gls-tracking](https://github.com/dbojdo/gls-tracking "GLS Track & Trace API library")
+To learn how to use GLS APIs see:
+*   GLS-ADE: [https://github.com/dbojdo/gls-ade](https://github.com/dbojdo/gls-ade "GLS-ADE API library")
+*   GLS Track & Trace: [https://github.com/dbojdo/gls-tracking](https://github.com/dbojdo/gls-tracking "GLS Track & Trace API library")
  
