@@ -84,7 +84,7 @@ webit_gls:
     
     public function consignmentPrepareAction()
     {
-        /** @var AdeAccount */
+        /** @var \Webit\Bundle\GlsBundle\Account\AdeAccount */
         $account = $this->accountManager->getAdeAccount('my-test-account');
         
         /** @var \Webit\GlsAde\Api\ConsignmentPrepareApi */
@@ -95,7 +95,7 @@ webit_gls:
     
     public function checkParcelStatusAction()
         {
-            /** @var TrackAccount */
+            /** @var \Webit\Bundle\GlsBundle\Account\TrackAccount */
             $account = $this->accountManager->getTrackAccount('my-account');
             
             /** @var \Webit\GlsTracking\Api\TrackingApi */
