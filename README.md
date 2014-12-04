@@ -24,12 +24,13 @@ Add the **webit/gls-bundle** into **composer.json**
 ```
 
 ### Register bundle in Kernel
-Add following line:
+Add following lines:
 
 ```
 // in AppKernel::registerBundles()
 $bundles = array(
     // ...
+    new Webit\Bundle\SoapApiBundle\WebitSoapApiBundle(),
     new Webit\Bundle\GlsBundle\WebitGlsBundle(),
     // ...
 );
