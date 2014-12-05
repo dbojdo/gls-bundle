@@ -32,14 +32,14 @@ class ApiProvider implements ApiProviderInterface
 {
     const API_ADE_AUTH = 'ade_auth';
     const API_ADE_MPK = 'mpk';
-    const API_ADE_CONSIGNMENT_PREPARE = 'consignment_prepare_api';
+    const API_ADE_CONSIGNMENT_PREPARE = 'consignment_prepare';
     const API_ADE_PROFILE = 'profile';
     const API_ADE_SERVICE = 'service';
     const API_ADE_SENDER_ADDRESS = 'sender_address';
     const API_ADE_PICKUP = 'pickup';
     const API_ADE_POST_CODE = 'post_code';
     const API_TRACKING = 'tracking';
-    const API_TRACKING_URL_PROVIDER = 'trackingUrl';
+    const API_TRACKING_URL_PROVIDER = 'tracking_url';
 
     /**
      * @var ApiFactory
@@ -172,11 +172,10 @@ class ApiProvider implements ApiProviderInterface
     {
         $key = sprintf('%s_%s', self::API_TRACKING, $account->getAlias());
         if (! $this->api->containsKey($key)) {
-            $this->checkTrackingAccount($account);
             $this->api->set(
                 $key,
                 $this->trackingApiFactory->createTrackingApi(
-                    $account->getTrackUsername(), $account->getTrackPassword()
+                    $account->getUsername(), $account->getPassword()
                 )
             );
         }
@@ -190,13 +189,12 @@ class ApiProvider implements ApiProviderInterface
      */
     public function getTrackingUrlProvider(TrackAccount $account)
     {
-        $key = sprintf('%s_%s', self::TRACKING_URL_PROVIDER, $account->getAlias());
+        $key = sprintf('%s_%s', self::API_TRACKING_URL_PROVIDER, $account->getAlias());
         if (! $this->api->containsKey($key)) {
-            $this->checkTrackingAccount($account);
             $this->api->set(
                 $key,
-                $this->trackingApiFactory->createTrackingApi(
-                    $account->getTrackUsername(), $account->getTrackPassword()
+                $this->trackingUrlProviderFactory->createTrackingUrlProvider(
+                    $account->getUsername(), $account->getPassword()
                 )
             );
         }
@@ -226,43 +224,11 @@ class ApiProvider implements ApiProviderInterface
      */
     private function createAdeApi($api, AdeAccount $account)
     {
-        $this->checkAdeAccount($account);
         $factoryMethod = sprintf('create%sApi', ucfirst(Inflector::camelize($api)));
 
         return call_user_func_array(
-            $this->adeApiFactory,
-            $factoryMethod,
-            array($this->getAdeAuthApi($account), $account->getAdeUsername(), $account->getAdePassword())
+            array($this->adeApiFactory, $factoryMethod),
+            array($this->getAdeAuthApi($account), $account->getUsername(), $account->getPassword())
         );
-    }
-
-    /**
-     * @param AdeAccount $account
-     * @return bool
-     */
-    private function checkAdeAccount(AdeAccount $account)
-    {
-        if (! $account->getUsername() || ! $account->getPassword()) {
-            throw new \InvalidArgumentException(
-                'GLS ADE account has not been configured properly: Missing username and/or password'
-            );
-        }
-
-        return true;
-    }
-
-    /**
-     * @param TrackAccount $account
-     * @return bool
-     */
-    private function checkTrackingAccount(TrackAccount $account)
-    {
-        if (! $account->getUsername() || ! $account->getPassword()) {
-            throw new \InvalidArgumentException(
-                'GLS Track & Trace account has not been configured properly: Missing username and/or password'
-            );
-        }
-
-        return true;
     }
 }

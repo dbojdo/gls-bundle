@@ -2,9 +2,8 @@
 /**
  * AbstractAccountTest.php
  *
- * @author dbojdo - Daniel Bojdo <daniel.bojdo@dxi.eu>
+ * @author dbojdo - Daniel Bojdo <daniel.bojdo@web-it.eu>
  * Created on Dec 04, 2014, 10:13
- * Copyright (C) DXI Ltd
  */
 
 namespace Webit\Bundle\GlsBundle\Tests\Account;

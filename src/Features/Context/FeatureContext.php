@@ -2,9 +2,8 @@
 /**
  * FeatureContext.php
  *
- * @author dbojdo - Daniel Bojdo <daniel.bojdo@dxi.eu>
+ * @author dbojdo - Daniel Bojdo <daniel.bojdo@web-it.eu>
  * Created on Dec 03, 2014, 12:13
- * Copyright (C) DXI Ltd
  */
 
 namespace Webit\Bundle\GlsBundle\Features\Context;

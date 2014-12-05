@@ -2,9 +2,8 @@
 /**
  * AppKernel.php
  *
- * @author dbojdo - Daniel Bojdo <daniel.bojdo@dxi.eu>
+ * @author dbojdo - Daniel Bojdo <daniel.bojdo@web-it.eu>
  * Created on Dec 02, 2014, 11:05
- * Copyright (C) DXI Ltd
  */
 
 use Symfony\Component\Config\Loader\LoaderInterface;
