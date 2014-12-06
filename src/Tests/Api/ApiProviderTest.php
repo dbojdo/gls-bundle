@@ -262,24 +262,6 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
         $api2 = $this->apiProvider->getTrackingApi($account);
         $this->assertSame($api1, $api2);
     }
-
-    /**
-     * @test
-     */
-    public function shouldProvideTrackingUrlProvider()
-    {
-        $account = $this->createTrackingAccount('username', 'password');
-
-        $this->trackingUrlProviderFactory->expects($this->once())
-            ->method('createTrackingUrlProvider')
-            ->willReturn($this->createTrackingUrlProvider());
-
-        $provider1 = $this->apiProvider->getTrackingUrlProvider($account);
-        $this->assertInstanceOf('Webit\GlsTracking\UrlProvider\TrackingUrlProvider', $provider1);
-
-        $provider2 = $this->apiProvider->getTrackingUrlProvider($account);
-        $this->assertSame($provider1, $provider2);
-    }
     
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|ApiFactory
