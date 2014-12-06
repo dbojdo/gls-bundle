@@ -90,10 +90,11 @@ class MyController {
     public function __construct(
         AccountManagerInterface $accountManager,
         ApiProviderInterface $apiProvider,
-        TrackingUrlProvider $apiProvider
+        TrackingUrlProvider $trackingUrlProvider
     ) {
         $this->accountManager = $accountManager;
         $this->apiProvider = $apiProvider;
+        $this->trackingUrlProvider = $trackingUrlProvider;
     }
     
     public function consignmentPrepareAction()
