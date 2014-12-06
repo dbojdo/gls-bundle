@@ -91,7 +91,7 @@ class FeatureContext implements Context, SnippetAcceptingContext, KernelAwareCon
                 Assert::assertNotEmpty($account, sprintf('Expected account with alias "%s" has not been registered', $row['alias']));
                 Assert::assertEquals($row['username'], $account->getUsername());
                 Assert::assertEquals($row['password'], $account->getPassword());
-                Assert::assertEquals($row['test'] == 'true', $account->isTestEnvironment());
+                Assert::assertEquals($row['test'] == 'true', $account->isTestMode());
             }
 
             if ($row['type'] == 'track') {

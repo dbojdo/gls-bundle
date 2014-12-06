@@ -7,8 +7,7 @@
  */
 namespace Webit\Bundle\GlsBundle\Api;
 
-use Webit\Bundle\GlsBundle\Account\AdeAccount;
-use Webit\Bundle\GlsBundle\Account\TrackAccount;
+use Webit\GlsAde\Model\AdeAccount;
 use Webit\GlsAde\Api\AuthApi;
 use Webit\GlsAde\Api\ConsignmentPrepareApi;
 use Webit\GlsAde\Api\MpkApi;
@@ -18,6 +17,7 @@ use Webit\GlsAde\Api\ProfileApi;
 use Webit\GlsAde\Api\SenderAddressApi;
 use Webit\GlsAde\Api\ServiceApi;
 use Webit\GlsTracking\Api\TrackingApi;
+use Webit\GlsTracking\Model\UserCredentials;
 use Webit\GlsTracking\UrlProvider\TrackingUrlProvider;
 
 /**
@@ -84,14 +84,8 @@ interface ApiProviderInterface
 
     /**
      *
-     * @param TrackAccount $account
+     * @param UserCredentials $credentials
      * @return TrackingApi
      */
-    public function getTrackingApi(TrackAccount $account);
-
-    /**
-     * @param TrackAccount $account
-     * @return TrackingUrlProvider
-     */
-    public function getTrackingUrlProvider(TrackAccount $account);
+    public function getTrackingApi(UserCredentials $credentials);
 }

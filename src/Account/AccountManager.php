@@ -8,6 +8,8 @@
 namespace Webit\Bundle\GlsBundle\Account;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Webit\GlsAde\Model\AdeAccount;
+use Webit\GlsTracking\Model\UserCredentials;
 
 /**
  * Class AccountManager
@@ -26,29 +28,31 @@ class AccountManager implements AccountManagerInterface
     }
 
     /**
-     * @param AbstractAccount $account
+     * @param mixed $account
      * @param string $key
      */
-    private function registerAccount(AbstractAccount $account, $key)
+    private function registerAccount($account, $key)
     {
         $this->accounts->set($key, $account);
     }
 
     /**
+     * @param string $alias
      * @param AdeAccount $account
      */
-    public function registerAdeAccount(AdeAccount $account)
+    public function registerAdeAccount($alias, AdeAccount $account)
     {
-        $key = $this->createKey($account->getAlias(), 'ade');
+        $key = $this->createKey($alias, 'ade');
         $this->registerAccount($account, $key);
     }
 
     /**
-     * @param TrackAccount $account
+     * @param string $alias
+     * @param UserCredentials $account
      */
-    public function registerTrackAccount(TrackAccount $account)
+    public function registerTrackAccount($alias, UserCredentials $account)
     {
-        $key = $this->createKey($account->getAlias(), 'track');
+        $key = $this->createKey($alias, 'track');
         $this->registerAccount($account, $key);
     }
 

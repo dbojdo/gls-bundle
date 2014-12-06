@@ -8,7 +8,8 @@ Feature: WebitGlsBundle - Service container extension
     Then there should be following services in container:
     """
     webit_gls.account_manager.default, webit_gls.account_manager,
-    webit_gls.api_provider.default, webit_gls.api_provider
+    webit_gls.api_provider.default, webit_gls.api_provider,
+    webit_gls.tracking.url_provider, webit_gls.tracking.url_provider_factory
     """
 
   Scenario: Loading configuration with ADE accounts to AccountManager

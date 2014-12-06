@@ -7,6 +7,9 @@
  */
 namespace Webit\Bundle\GlsBundle\Account;
 
+use Webit\GlsAde\Model\AdeAccount;
+use Webit\GlsTracking\Model\UserCredentials;
+
 /**
  * Interface AccountManagerInterface
  * @package Webit\Bundle\GlsBundle\Account
@@ -14,14 +17,16 @@ namespace Webit\Bundle\GlsBundle\Account;
 interface AccountManagerInterface
 {
     /**
+     * @param string $alias
      * @param AdeAccount $account
      */
-    public function registerAdeAccount(AdeAccount $account);
+    public function registerAdeAccount($alias, AdeAccount $account);
 
     /**
-     * @param TrackAccount $account
+     * @param string $alias
+     * @param UserCredentials $account
      */
-    public function registerTrackAccount(TrackAccount $account);
+    public function registerTrackAccount($alias, UserCredentials $account);
 
     /**
      * @param string $alias
@@ -31,7 +36,7 @@ interface AccountManagerInterface
 
     /**
      * @param string $alias
-     * @return TrackAccount
+     * @return UserCredentials
      */
     public function getTrackAccount($alias);
 }

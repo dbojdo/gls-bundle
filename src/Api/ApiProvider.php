@@ -9,8 +9,7 @@ namespace Webit\Bundle\GlsBundle\Api;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Inflector\Inflector;
-use Webit\Bundle\GlsBundle\Account\AdeAccount;
-use Webit\Bundle\GlsBundle\Account\TrackAccount;
+use Webit\GlsAde\Model\AdeAccount;
 use Webit\GlsAde\Api\ConsignmentPrepareApi;
 use Webit\GlsAde\Api\Factory\ApiFactory;
 use Webit\GlsAde\Api\ProfileApi;
@@ -22,7 +21,8 @@ use Webit\GlsAde\Api\SenderAddressApi;
 use Webit\GlsAde\Api\PostCodeApi;
 use Webit\GlsTracking\Api\Factory\TrackingApiFactory;
 use Webit\GlsTracking\Api\TrackingApi;
-use Webit\GlsTracking\UrlProvider\TrackingUrlProviderFactoryInterface;
+use Webit\GlsTracking\Model\UserCredentials;
+use Webit\GlsTracking\UrlProvider\TrackingUrlProviderFactory;
 
 /**
  * Class ApiProvider
@@ -52,11 +52,6 @@ class ApiProvider implements ApiProviderInterface
     private $trackingApiFactory;
 
     /**
-     * @var TrackingUrlProviderFactoryInterface
-     */
-    private $trackingUrlProviderFactory;
-
-    /**
      * @var ArrayCollection
      */
     private $api;
@@ -64,16 +59,13 @@ class ApiProvider implements ApiProviderInterface
     /**
      * @param ApiFactory $adeApiFactory
      * @param TrackingApiFactory $trackingApiFactory
-     * @param TrackingUrlProviderFactoryInterface $trackingUrlProviderFactory
      */
     public function __construct(
         ApiFactory $adeApiFactory,
-        TrackingApiFactory $trackingApiFactory,
-        TrackingUrlProviderFactoryInterface $trackingUrlProviderFactory
+        TrackingApiFactory $trackingApiFactory
     ) {
         $this->adeApiFactory = $adeApiFactory;
         $this->trackingApiFactory = $trackingApiFactory;
-        $this->trackingUrlProviderFactory = $trackingUrlProviderFactory;
 
         $this->api = new ArrayCollection();
     }
@@ -85,9 +77,9 @@ class ApiProvider implements ApiProviderInterface
      */
     public function getAdeAuthApi(AdeAccount $account)
     {
-        $key = sprintf('%s_%s', self::API_ADE_AUTH, $account->isTestEnvironment() ? 'test' : 'prod');
+        $key = sprintf('%s_%s', self::API_ADE_AUTH, $account->isTestMode() ? 'test' : 'prod');
         if ($this->api->containsKey($key) == false) {
-            $this->api->set($key, $this->adeApiFactory->createAuthApi($account->isTestEnvironment()));
+            $this->api->set($key, $this->adeApiFactory->createAuthApi($account->isTestMode()));
         }
 
         return $this->api->get($key);
@@ -165,36 +157,17 @@ class ApiProvider implements ApiProviderInterface
 
     /**
      *
-     * @param TrackAccount $account
+     * @param UserCredentials $credentials
      * @return TrackingApi
      */
-    public function getTrackingApi(TrackAccount $account)
+    public function getTrackingApi(UserCredentials $credentials)
     {
-        $key = sprintf('%s_%s', self::API_TRACKING, $account->getAlias());
+        $key = sprintf('%s_%s', self::API_TRACKING, $credentials->getUsername());
         if (! $this->api->containsKey($key)) {
             $this->api->set(
                 $key,
                 $this->trackingApiFactory->createTrackingApi(
-                    $account->getUsername(), $account->getPassword()
-                )
-            );
-        }
-
-        return $this->api->get($key);
-    }
-
-    /**
-     * @param TrackAccount $account
-     * @return mixed
-     */
-    public function getTrackingUrlProvider(TrackAccount $account)
-    {
-        $key = sprintf('%s_%s', self::API_TRACKING_URL_PROVIDER, $account->getAlias());
-        if (! $this->api->containsKey($key)) {
-            $this->api->set(
-                $key,
-                $this->trackingUrlProviderFactory->createTrackingUrlProvider(
-                    $account->getUsername(), $account->getPassword()
+                    $credentials
                 )
             );
         }
@@ -209,7 +182,7 @@ class ApiProvider implements ApiProviderInterface
      */
     private function getAdeApi($api, AdeAccount $account)
     {
-        $key = sprintf('%s_%s', $account->getAlias(), $api);
+        $key = sprintf('%s_%s_%s', $account->getUsername(), $account->isTestMode() ? 'test' : 'prod', $api);
         if (! $this->api->containsKey($key)) {
             $this->api->set($key, $this->createAdeApi($api, $account));
         }
@@ -228,7 +201,7 @@ class ApiProvider implements ApiProviderInterface
 
         return call_user_func_array(
             array($this->adeApiFactory, $factoryMethod),
-            array($this->getAdeAuthApi($account), $account->getUsername(), $account->getPassword())
+            array($this->getAdeAuthApi($account), $account)
         );
     }
 }

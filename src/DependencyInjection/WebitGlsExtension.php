@@ -46,6 +46,10 @@ class WebitGlsExtension extends Extension
         }
     }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param array $accounts
+     */
     private function loadAdeAccounts(ContainerBuilder $container, array $accounts)
     {
         $manager = $container->getDefinition('webit_gls.account_manager.default');
@@ -53,15 +57,20 @@ class WebitGlsExtension extends Extension
             $manager->addMethodCall(
                 'registerAdeAccount',
                 array(
+                    $alias,
                     new Definition(
-                        'Webit\Bundle\GlsBundle\Account\AdeAccount',
-                        array($alias, $arAccount['username'], $arAccount['password'], $arAccount['test_mode'])
+                        'Webit\GlsAde\Model\AdeAccount',
+                        array($arAccount['username'], $arAccount['password'], $arAccount['test_mode'])
                     )
                 )
             );
         }
     }
 
+    /**
+     * @param ContainerBuilder $container
+     * @param array $accounts
+     */
     private function loadTrackAccounts(ContainerBuilder $container, array $accounts)
     {
         $manager = $container->getDefinition('webit_gls.account_manager.default');
@@ -69,9 +78,10 @@ class WebitGlsExtension extends Extension
             $manager->addMethodCall(
                 'registerTrackAccount',
                 array(
+                    $alias,
                     new Definition(
-                        'Webit\Bundle\GlsBundle\Account\TrackAccount',
-                        array($alias, $arAccount['username'], $arAccount['password'])
+                        'Webit\GlsTracking\Model\UserCredentials',
+                        array($arAccount['username'], $arAccount['password'])
                     )
                 )
             );

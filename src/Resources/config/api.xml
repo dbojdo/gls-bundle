@@ -16,6 +16,7 @@
         <parameter key="webit_gls.tracking.input_normalizer.class">Webit\SoapApi\Input\InputNormalizerSerializerBased</parameter>
         <parameter key="webit_gls.tracking.api_exception_factory.class">Webit\GlsTracking\Api\Exception\ExceptionFactory</parameter>
         <parameter key="webit_gls.tracking.url_provider_factory.class">Webit\GlsTracking\UrlProvider\TrackingUrlProviderFactory</parameter>
+        <parameter key="webit_gls.tracking.url_provider.class">Webit\GlsTracking\UrlProvider\TrackingUrlProvider</parameter>
 
         <!-- Common -->
         <parameter key="webit_gls.api_provider.default.class">Webit\Bundle\GlsBundle\Api\ApiProvider</parameter>
@@ -65,12 +66,14 @@
             <argument type="service" id="webit_gls.tracking.api_exception_factory" />
         </service>
         <service id="webit_gls.tracking.url_provider_factory" class="%webit_gls.tracking.url_provider_factory.class%" />
+        <service id="webit_gls.tracking.url_provider" class="%webit_gls.tracking.url_provider.class%">
+            <factory service="webit_gls.tracking.url_provider_factory" method="createTrackingUrlProvider" />
+        </service>
 
         <!-- Common -->
         <service id="webit_gls.api_provider.default" class="%webit_gls.api_provider.default.class%">
             <argument type="service" id="webit_gls.ade.api_factory" />
             <argument type="service" id="webit_gls.tracking.api_factory" />
-            <argument type="service" id="webit_gls.tracking.url_provider_factory" />
         </service>
         <service id="webit_gls.api_provider" alias="webit_gls.api_provider.default" />
     </services>
