@@ -70,7 +70,8 @@ use Webit\Bundle\GlsBundle\Api\ApiProviderInterface;
 use Webit\Bundle\GlsBundle\Account\AccountManagerInterface;
 use Webit\GlsTracking\UrlProvider\TrackingUrlProvider;
 
-class MyController {
+class MyController
+{
  
     /**
      * @var AccountManagerInterface
