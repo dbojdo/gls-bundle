@@ -58,7 +58,8 @@ webit_gls:
 ```
 
 ## Usage
-To use GLS APIs you need ***AccountManager*** and ***ApiProvider***.
+To use GLS APIs you need ***AccountManager*** ('webit_gls.account_manager'), ***ApiProvider*** ('webit_gls.api_provider'),
+and ***TrackingUrlProvider*** ('webit_gls.tracking.url_provider').
 You can get them directly from Service Container or inject them to your class.
 
 ```
@@ -67,7 +68,8 @@ namespace Acme\Bundle\AcmeBundle\Controller;
  
 use Webit\Bundle\GlsBundle\Api\ApiProviderInterface;
 use Webit\Bundle\GlsBundle\Account\AccountManagerInterface;
- 
+use Webit\GlsTracking\UrlProvider\TrackingUrlProvider;
+
 class MyController {
  
     /**
@@ -79,9 +81,17 @@ class MyController {
      * @var ApiProviderInterface
      */
     private $apiProvider;
-    
-    public function __construct(AccountManagerInterface $accountManager, ApiProviderInterface $apiProvider)
-    {
+
+    /**
+     * @var TrackingUrlProvider
+     */
+    private $trackingUrlProvider;
+
+    public function __construct(
+        AccountManagerInterface $accountManager,
+        ApiProviderInterface $apiProvider,
+        TrackingUrlProvider $apiProvider
+    ) {
         $this->accountManager = $accountManager;
         $this->apiProvider = $apiProvider;
     }
@@ -106,6 +116,13 @@ class MyController {
         $trackingApi = $this->apiProvider->getTrackingApi($account);
             
         // do your stuff with API
+    }
+
+    public function getTrackingUrlAction($reference, $country = 'EN')
+    {
+        $url = $trackingUrlProvider->getStandardTrackingUrl($reference, $country);
+
+        // do your stuff with URL
     }
 }
 ```
