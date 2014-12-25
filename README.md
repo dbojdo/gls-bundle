@@ -26,7 +26,7 @@ Add the **webit/gls-bundle** into **composer.json**
 ### Register bundle in Kernel
 Add following lines:
 
-```
+```php
 // in AppKernel::registerBundles()
 $bundles = array(
     // ...
@@ -39,7 +39,7 @@ $bundles = array(
 ## Configuration
 You can define as much accounts as you need (ADE Accounts and Track & Trace as well)
 
-```
+```yaml
 webit_gls:
    ade_accounts:
        my-production-account:
@@ -62,7 +62,7 @@ To use GLS APIs you need ***AccountManager*** ('webit_gls.account_manager'), ***
 and ***TrackingUrlProvider*** ('webit_gls.tracking.url_provider').
 You can get them directly from Service Container or inject them to your class.
 
-```
+```php
 <?php
 namespace Acme\Bundle\AcmeBundle\Controller;
  
