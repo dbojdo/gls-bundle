@@ -33,6 +33,7 @@
             <argument type="collection">
                 <argument>input</argument>
             </argument>
+            <argument>true</argument>
         </service>
         <service id="webit_gls.ade.exception_factory" class="%webit_gls.ade.exception_factory.class%" public="false"/>
         <service id="webit_gls.ade.api_factory" class="%webit_gls.ade.api_factory.class%">
