@@ -27,9 +27,8 @@
             id="webit_gls.ade.input_normalizer"
             class="%webit_gls.ade.input_normalizer.class%"
             public="false"
-            factory-service="webit_soap_api.input_normalizer.serializer_factory"
-            factory-method="createNormalizer"
         >
+            <factory service="webit_soap_api.input_normalizer.serializer_factory" method="createNormalizer" />
             <argument type="collection">
                 <argument>input</argument>
             </argument>
@@ -56,9 +55,8 @@
             id="webit_gls.tracking.input_normalizer"
             class="%webit_gls.tracking.input_normalizer.class%"
             public="false"
-            factory-service="webit_soap_api.input_normalizer.serializer_factory"
-            factory-method="createNormalizer"
         >
+            <factory service="webit_soap_api.input_normalizer.serializer_factory" method="createNormalizer" />
         </service>
         <service id="webit_gls.tracking.api_exception_factory" class="%webit_gls.tracking.api_exception_factory.class%" public="false"/>
         <service id="webit_gls.tracking.api_factory" class="%webit_gls.tracking.api_factory.class%">
@@ -71,9 +69,8 @@
         <service id="webit_gls.tracking.url_provider_factory" class="%webit_gls.tracking.url_provider_factory.class%" />
         <service
             id="webit_gls.tracking.url_provider" class="%webit_gls.tracking.url_provider.class%"
-            factory-service="webit_gls.tracking.url_provider_factory"
-            factory-method="createTrackingUrlProvider"
         >
+            <factory service="webit_gls.tracking.url_provider_factory" method="createTrackingUrlProvider" />
         </service>
 
         <!-- Common -->
