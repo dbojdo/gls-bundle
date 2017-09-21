@@ -14,10 +14,10 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/symfony": "~2.3@stable",
-        "webit/soap-api-bundle": "~1.0",
-        "webit/gls-ade": "dev-master",
-        "webit/gls-tracking": "dev-master"
+        "symfony/symfony": "^2.3",
+        "webit/soap-api-bundle": "^1.0.0",
+        "webit/gls-ade": "^1.0.0",
+        "webit/gls-tracking": "^1.0.0"
     },
     "require-dev": {
         "behat/behat": "~3.0",
@@ -29,5 +29,12 @@
             "Webit\\Bundle\\GlsBundle\\" : "src"
         }
     },
-    "minimum-stability": "dev"
+    "extra": {
+        "branch-alias": {
+            "dev-1.x": "1.x-dev",
+            "dev-master": "2.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
