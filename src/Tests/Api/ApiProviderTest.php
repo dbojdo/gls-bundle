@@ -22,7 +22,6 @@ use Webit\GlsAde\Api\SenderAddressApi;
 use Webit\GlsAde\Api\ServiceApi;
 use Webit\GlsTracking\Api\Factory\TrackingApiFactory;
 use Webit\GlsTracking\Api\TrackingApi;
-use Webit\GlsTracking\UrlProvider\TrackingUrlProviderFactory;
 
 /**
  * Class ApiProviderTest
@@ -41,11 +40,6 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     private $trackingApiFactory;
 
     /**
-     * @var TrackingUrlProviderFactory
-     */
-    private $trackingUrlProviderFactory;
-
-    /**
      * @var ApiProvider
      */
     private $apiProvider;
@@ -59,13 +53,11 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->adeApiFactory = $this->createAdeApiFactory();
         $this->trackingApiFactory = $this->createTrackingApiFactory();
-        $this->trackingUrlProviderFactory = $this->createTrackingUrlProviderFactory();
         $this->adeAuthApi = $this->createAdeAuthApi();
 
         $this->apiProvider = new ApiProvider(
             $this->adeApiFactory,
-            $this->trackingApiFactory,
-            $this->trackingUrlProviderFactory
+            $this->trackingApiFactory
         );
     }
 
@@ -80,8 +72,6 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
                             ->with($this->equalTo($account->isTestMode()))
                             ->willReturn($this->adeAuthApi);
 
-
-
         $api1 = $this->apiProvider->getAdeAuthApi($account);
         $this->assertInstanceOf('Webit\GlsAde\Api\AuthApi', $api1);
 
@@ -95,13 +85,10 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function shouldProvideAdeMpkApi()
     {
         $account = $this->createAdeAccount('username', 'password');
-        $this->adeApiFactory->expects($this->any())
-            ->method('createAuthApi')
-            ->willReturn($this->adeAuthApi);
 
         $this->adeApiFactory->expects($this->once())
             ->method('createMpkApi')
-            ->with($this->equalTo($this->adeAuthApi), $this->equalTo($account))
+            ->with($this->equalTo($account))
             ->willReturn($this->createAdeMpkApi());
 
         $api1 = $this->apiProvider->getAdeMpkApi($account);
@@ -118,13 +105,10 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function shouldProvideAdeConsignmentPrepareApi()
     {
         $account = $this->createAdeAccount('username', 'password');
-        $this->adeApiFactory->expects($this->any())
-            ->method('createAuthApi')
-            ->willReturn($this->adeAuthApi);
 
         $this->adeApiFactory->expects($this->once())
             ->method('createConsignmentPrepareApi')
-            ->with($this->equalTo($this->adeAuthApi), $this->equalTo($account))
+            ->with($this->equalTo($account))
             ->willReturn($this->createAdeConsignmentPrepareApi());
 
         $api1 = $this->apiProvider->getAdeConsignmentPrepareApi($account);
@@ -140,13 +124,9 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function shouldProvideAdeProfileApi()
     {
         $account = $this->createAdeAccount('username', 'password');
-        $this->adeApiFactory->expects($this->any())
-            ->method('createAuthApi')
-            ->willReturn($this->adeAuthApi);
-
         $this->adeApiFactory->expects($this->once())
             ->method('createProfileApi')
-            ->with($this->equalTo($this->adeAuthApi), $this->equalTo($account))
+            ->with($this->equalTo($account))
             ->willReturn($this->createAdeProfileApi());
 
         $api1 = $this->apiProvider->getAdeProfileApi($account);
@@ -162,13 +142,10 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function shouldProvideAdeServiceApi()
     {
         $account = $this->createAdeAccount('username', 'password');
-        $this->adeApiFactory->expects($this->any())
-            ->method('createAuthApi')
-            ->willReturn($this->adeAuthApi);
 
         $this->adeApiFactory->expects($this->once())
             ->method('createServiceApi')
-            ->with($this->equalTo($this->adeAuthApi), $this->equalTo($account))
+            ->with($this->equalTo($account))
             ->willReturn($this->createAdeServiceApi());
 
         $api1 = $this->apiProvider->getAdeServiceApi($account);
@@ -184,13 +161,10 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function shouldProvideAdeSenderAddressApi()
     {
         $account = $this->createAdeAccount('username', 'password');
-        $this->adeApiFactory->expects($this->any())
-            ->method('createAuthApi')
-            ->willReturn($this->adeAuthApi);
 
         $this->adeApiFactory->expects($this->once())
             ->method('createSenderAddressApi')
-            ->with($this->equalTo($this->adeAuthApi), $this->equalTo($account))
+            ->with($this->equalTo($account))
             ->willReturn($this->createAdeSenderAddressApi());
 
         $api1 = $this->apiProvider->getAdeSenderAddressApi($account);
@@ -206,13 +180,10 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function shouldProvideAdePickupApi()
     {
         $account = $this->createAdeAccount('username', 'password');
-        $this->adeApiFactory->expects($this->any())
-            ->method('createAuthApi')
-            ->willReturn($this->adeAuthApi);
 
         $this->adeApiFactory->expects($this->once())
             ->method('createPickupApi')
-            ->with($this->equalTo($this->adeAuthApi), $this->equalTo($account))
+            ->with($this->equalTo($account))
             ->willReturn($this->createAdePickupApi());
 
         $api1 = $this->apiProvider->getAdePickupApi($account);
@@ -228,13 +199,10 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     public function shouldProvideAdePostCodeApi()
     {
         $account = $this->createAdeAccount('username', 'password');
-        $this->adeApiFactory->expects($this->any())
-            ->method('createAuthApi')
-            ->willReturn($this->adeAuthApi);
 
         $this->adeApiFactory->expects($this->once())
             ->method('createPostCodeApi')
-            ->with($this->equalTo($this->adeAuthApi), $this->equalTo($account))
+            ->with($this->equalTo($account))
             ->willReturn($this->createAdePostCodeApi());
 
         $api1 = $this->apiProvider->getAdePostCodeApi($account);
@@ -278,15 +246,6 @@ class ApiProviderTest extends \PHPUnit_Framework_TestCase
     {
         return $this->getMockBuilder('Webit\GlsTracking\Api\Factory\TrackingApiFactory')
                     ->disableOriginalConstructor()->getMock();
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|TrackingUrlProviderFactory
-     */
-    private function createTrackingUrlProviderFactory()
-    {
-        return $this->getMockBuilder('Webit\GlsTracking\UrlProvider\TrackingUrlProviderFactory')
-            ->disableOriginalConstructor()->getMock();
     }
 
     /**

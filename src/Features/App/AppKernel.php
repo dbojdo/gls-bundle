@@ -55,9 +55,6 @@ class AppKernel extends Kernel
     public function registerBundles()
     {
         $bundles = array(
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new JMS\SerializerBundle\JMSSerializerBundle(),
-            new Webit\Bundle\SoapApiBundle\WebitSoapApiBundle(),
             new Webit\Bundle\GlsBundle\WebitGlsBundle()
         );
 
@@ -73,9 +70,9 @@ class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $config = file_get_contents(__DIR__.'/config/config.yml');
+        $config = '';
         if ($this->configMerge) {
-            $config = Yaml::parse($config);
+            $config = $config ? Yaml::parse($config) : array();
             foreach ($this->configMerge as $configToMerge) {
                 $config = array_replace($config, Yaml::parse($configToMerge));
             }

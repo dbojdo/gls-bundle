@@ -9,7 +9,6 @@
 namespace Webit\Bundle\GlsBundle\Features\Context;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
@@ -21,7 +20,7 @@ use Webit\Bundle\GlsBundle\Account\AccountManagerInterface;
  * Class FeatureContext
  * @package Webit\Bundle\GlsBundle\Features\Context
  */
-class FeatureContext implements Context, SnippetAcceptingContext, KernelAwareContext
+class FeatureContext implements Context, KernelAwareContext
 {
     /**
      * @var AppKernel

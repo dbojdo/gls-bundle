@@ -201,7 +201,7 @@ class ApiProvider implements ApiProviderInterface
 
         return call_user_func_array(
             array($this->adeApiFactory, $factoryMethod),
-            array($this->getAdeAuthApi($account), $account)
+            array($account)
         );
     }
 }
